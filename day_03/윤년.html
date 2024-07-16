@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // var 년도;
+        // 년도 = 2024;
+
+        // if(년도 % 400 === 0) {
+        //     console.log(`${년도}년은 윤년입니다.`)
+        // } else if(년도 % 100 === 0){
+        //     console.log(`${년도}년은 윤년이 아닙니다.`)
+        // } else if(년도 % 4 === 0){
+        //     console.log(`${년도}년은 윤년입니다.`)
+        // } else {
+        //     console.log(`${년도}년은 윤년이 아닙니다.`)
+        // }
+
+
+        var 년도 = 2024;
+
+        if(년도 % 4 === 0 && 년도 % 100 !== 0 || 년도 % 400 === 0) {
+            console.log(`${년도}년은 윤년입니다.`)
+         } else {
+            console.log(`${년도}년은 윤년이 아닙니다.`)
+         }
+    </script>
+</body>
+</html>
