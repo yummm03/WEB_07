@@ -7,14 +7,19 @@
 </head>
 <body>
     <script>
-    
-        for(let j = 0 ; j < 5 ; j--) {
-            for(let i = 0 ; i <= j ; i ++) {
+
+        for(let j = 0 ; j < 5 ; j ++) {
+            for(let i = 1 ; i <= j ; i ++) {
+                document.write('&nbsp;&nbsp;&nbsp;')
+            }
+            for(let i = 4 ; i >= j ; i --) {
                 document.write('&nbsp;*&nbsp;')
             }
             document.write('<br>')
         }
 
+
+        
     </script>
 </body>
 </html>
