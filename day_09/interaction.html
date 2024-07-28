@@ -23,17 +23,50 @@
 
 
     <script>
-        const box = document.getElementsByClassName('box');
-        const button = document.getElementsByClassName('switch');
+        // const box = document.getElementsByClassName('box');
+        // const button = document.querySelector('.switch');
 
-        if() {
-            button[0].addEventListener('click', () => {
-                box[0].classList.add('active')
-            })
-        } eles() {
-            
-        }
-        
+        // button.addEventListener('click',()=>{
+        //     box[0].classList.add('active')
+        // })
+    
+        const box = document.getElementsByClassName('box');
+        const button = document.querySelector('.switch');
+
+        // button.addEventListener('click',()=>{
+        //     let onoff = box[0].classList.contains('active');
+        //     if(onoff) {
+        //         box[0].classList.add('active');
+        //     } else() {
+        //         box[0].classList.remove('active');
+        //     }
+        // });
+        let 클릭 =  button.addEventListener('click',()=>{
+                        box[0].classList.add('active')
+                    })
+
+        // const on = box[0].classList.includes('active');
+
+        // function 함수 {
+        //     if(on) {
+        //         box[0].classList.add('active');
+        //     } else () {
+        //         box[0].classList.remove('active');
+        //     }
+        // }
+
+        const on = box[0].classList.add('active');
+        const off = box[0].classList.remove('active');
+
+        button.addEventListener('click', ()=> {
+            if(on) {
+                console.log(box[0].classList.contains('active'));
+            }
+            if(off) {
+                console.log(box[0].classList.contains('active'));
+            }
+        } )
+
 
 
         // box[0].classList.contains('active') => box[0]이 active라는 클래스를 가졌는지
@@ -42,6 +75,8 @@
         // 숙제::
         // if문과 위의 contains를 이용해 스위치를 누를때마다 켜졌다 꺼졌다 반복되는
         // 인터렉션을 만들어보자!
+
+        // +추가 : classList.remove('클래스이름') 을 이용해 클래스를 제거할 수 있습니다
     </script>
 </body>
 </html>
