@@ -30,42 +30,34 @@
         //     box[0].classList.add('active')
         // })
     
+        // 방법1
+
         const box = document.getElementsByClassName('box');
         const button = document.querySelector('.switch');
 
+        button.addEventListener('click',()=>{
+            if(box[0].classList.contains('active')) {
+                box[0].classList.remove('active');
+            } else {
+                box[0].classList.add('active');
+            }
+        })
+
+        box[0].classList.toggle('active')
+
+        
+
+        // 방법2
+        // 
         // button.addEventListener('click',()=>{
-        //     let onoff = box[0].classList.contains('active');
-        //     if(onoff) {
-        //         box[0].classList.add('active');
-        //     } else() {
+        //     const isActive = box[0].classList.contains('active')
+        //     if(isActive) {
         //         box[0].classList.remove('active');
-        //     }
-        // });
-        let 클릭 =  button.addEventListener('click',()=>{
-                        box[0].classList.add('active')
-                    })
-
-        // const on = box[0].classList.includes('active');
-
-        // function 함수 {
-        //     if(on) {
+        //     } else {
         //         box[0].classList.add('active');
-        //     } else () {
-        //         box[0].classList.remove('active');
         //     }
-        // }
-
-        const on = box[0].classList.add('active');
-        const off = box[0].classList.remove('active');
-
-        button.addEventListener('click', ()=> {
-            if(on) {
-                console.log(box[0].classList.contains('active'));
-            }
-            if(off) {
-                console.log(box[0].classList.contains('active'));
-            }
-        } )
+        // })
+        // 위 방법처럼 상수선언 할 때는 안쪽에 선언해줘야 매 클릭마다 실행이된다.
 
 
 

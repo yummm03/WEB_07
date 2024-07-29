@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* * {
+            margin: 0;
+            padding: 0;
+        } */
+        .rect {
+            width: 300px;
+            height: 100px;
+            border: 1px solid #222;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grayscale-box">
+        <div class="rect"></div>
+        <input type="range">
+    </div>
+
+    <div class="grayscale-box">
+        <div class="rect"></div>
+        <input type="range">
+    </div>
+    <script>
+        // const gsBox = document.getElementsByClassName(grayscale-box);
+        // const rect = gsBox[0].getElementsByClassName(rect);
+        // const range = document.querySelector(input);
+
+        const gsBox = document.getElementsByClassName('grayscale-box');
+
+        for(let i = 0 ; i < gsBox.length ; i ++) {
+            const rect = gsBox[i].querySelector('.rect');
+            const range = gsBox[i].querySelector('input');
+
+            // range의 값이 얼마인가?
+            range.addEventListener('change', () => {
+                // range.value가 100일때 0, 0일때 100
+                rect.style.backgroundColor = `hsl(0, 0%, ${100 - range.value}%)`
+            })
+        }
+
+        // 객체의 스타일을 지정하는 방법 : 개체.style.속성이름 = '문자열로 속성지정'
+        // rect.addEventListener('click', () => {
+        //     rect.style.backgroundColor = 'red'
+        // })
+    </script>
+</body>
+</html>
