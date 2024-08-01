@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .slider {
+            width: 500px;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .content-wrapper {
+            display: flex;
+            transition: 0.5s;
+        }
+
+        .content {
+            height: 200px;
+            background-color: pink;
+
+            flex-shrink: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <ul class="content-wrapper">
+            <li class="content">1</li>
+            <li class="content">2</li>
+            <li class="content">3</li>
+            <li class="content">4</li>
+            <li class="content">5</li>
+        </ul>
+    </div>
+    <div class="controls">
+        <button class="prev">이전</button>
+        <button class="next">다음</button>
+    </div>
+
+    <script>
+        const viewCount = 1;
+        const gap = 4;
+        const slider = document.querySelector('.slider')
+        const contentWrapper = document.querySelector('.content-wrapper');
+        const slideCount = contentWrapper.childElementCount;
+        const prevButton = document.querySelector('.prev');
+        const nextButton = document.querySelector('.next');
+
+        const contentsWidth = (slider.clientWidth - gap * (viewCount - 1)) / viewCount
+
+        let index = 0 ;
+
+        contentWrapper.style.gap = `${gap}px`
+
+        for(let i = 0 ; i < contentWrapper.childElementCount ; i ++) {
+            contentWrapper.children[i].style.width = `${contentsWidth}px`
+        }
+
+        prevButton.addEventListener('click',()=>{
+            index--;
+            // index -= viewCount;
+            if(index < 0 ) {
+                index = 0 ;
+            }
+            applyIndexToSlider()
+        })
+        nextButton.addEventListener('click',()=>{
+            index++
+            // index += viewCount;
+            applyIndexToSlider()
+            
+            // 만약 마지막 슬라이드(복사본)에 도달 했다면
+            // transtion 지속시간만큼 시간이 흐른 뒤에
+            // transtion을 0으로 만들고, 좌표를 첫번째 슬라이드로 바꿔치기한다
+            if(index > contentWrapper.childElementCount-viewCount-1) {
+                index = 0 ;
+            }
+        })
+
+        function applyIndexToSlider(){
+            contentWrapper.style.transform = `translateX(${index * -(contentsWidth + gap)}px)`
+        }
+
+        const cloneCWlast = contentWrapper.lastElementChild.cloneNode(true);
+        const cloneCWFirst = contentWrapper.firstElementChild.cloneNode(true);
+
+        contentWrapper.insertBefore(cloneCWlast, contentWrapper.children[0]);
+        contentWrapper.appendChild(cloneCWFirst);
+
+        // console.log(cloneCWFirst,cloneCWlast);
+    </script>
+</body>
+</html>

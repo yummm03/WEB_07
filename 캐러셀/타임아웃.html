@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button class="ad">광고</button>
+    <p class="text">조용...</p>
+
+
+    <script>
+        const adButton = document.querySelector(`.ad`);
+        const pText = document.querySelector(`.text`);
+
+        adButton.addEventListener(`click`, () => {
+            pText.innerText = `광고일까요?`;
+            setTimeout(() => {
+                pText.innerText = `광고입니다!`
+            }, 2000);
+        })
+    </script>
+</body>
+</html>
