@@ -38,11 +38,14 @@
 <body>
     <div class="slider">
         <ul class="content-wrapper">
-            <li class="content">1</li>
+            <li class="content">1(처음)</li>
             <li class="content">2</li>
             <li class="content">3</li>
             <li class="content">4</li>
             <li class="content">5</li>
+            <li class="content">6</li>
+            <li class="content">7</li>
+            <li class="content">8(끝)</li>
         </ul>
     </div>
     <div class="controls">
@@ -52,16 +55,27 @@
 
     <script>
         const viewCount = 1;
-        const gap = 4;
+        const gap = 0;
         const slider = document.querySelector('.slider')
         const contentWrapper = document.querySelector('.content-wrapper');
         const slideCount = contentWrapper.childElementCount;
         const prevButton = document.querySelector('.prev');
         const nextButton = document.querySelector('.next');
+        const transitionTime = 300;
 
         const contentsWidth = (slider.clientWidth - gap * (viewCount - 1)) / viewCount
 
-        let index = 0 ;
+        const cloneCWLast = contentWrapper.lastElementChild.cloneNode(true);
+        const cloneCWFirst = contentWrapper.firstElementChild.cloneNode(true);
+
+        contentWrapper.insertBefore(cloneCWLast, contentWrapper.firstElementChild);
+        contentWrapper.appendChild(cloneCWFirst);
+
+
+        let index = viewCount ;
+        let playAble = true ;
+
+        applyIndexToSlider(false);
 
         contentWrapper.style.gap = `${gap}px`
 
@@ -72,40 +86,50 @@
         prevButton.addEventListener('click',()=>{
             index--;
             // index -= viewCount;
-            if(index < contentWrapper.childElementCount-viewCount-6) {
-                index = 5 ;
-                
-            }
-            applyIndexToSlider()
+            applyIndexToSlider(true)
+
+            setTimeout(() => {
+                playAble = true ;
+
+                if(index === viewCount - 1) {
+                    index = contentWrapper.childElementCount - viewCount - 1
+                    applyIndexToSlider(false)
+                }
+            }, transitionTime);
         })
         nextButton.addEventListener('click',()=>{
             index++
             // index += viewCount;
-            applyIndexToSlider()
-            
-            // 만약 마지막 슬라이드(복사본)에 도달 했다면
-            // transtion 지속시간만큼 시간이 흐른 뒤에
-            // transtion을 0으로 만들고, 좌표를 첫번째 슬라이드로 바꿔치기한다
-            if(index > contentWrapper.childElementCount-viewCount-1) {
-                setTimeout(()=>{
-                    contentWrapper.style.transition = `0s`;
-                }, 500)
-                index = 0;
-            }
-            if(index !== 0) {
-                contentWrapper.style.transition = `0.5s`;
-            }
+            applyIndexToSlider(true)
+
+            setTimeout(() => {
+                playAble = true ;
+
+                if(index === contentWrapper.childElementCount - viewCount) {
+                    // 만약 마지막 슬라이드(복사본)에 도달 했다면
+                    // transtion 지속시간만큼 시간이 흐른 뒤에
+                    // transtion을 0으로 만들고, 좌표를 첫번째 슬라이드로 바꿔치기한다
+                    index = viewCount
+                    applyIndexToSlider(false)
+                }
+            }, transitionTime);
         })
 
-        function applyIndexToSlider(){
+        // 무한슬라이드에서 애니메이션 중복작동 처리를 해주지 않으면
+        // 슬라이드가 인덱스 밖으로 뛰쳐 나가는 문제가 발생합니다
+        // 플레이 상태를 담는 변수, if문, setTimeout을 이용해 처리 가능합니다.
+        //
+            
+
+        function applyIndexToSlider(animation){
+            if(animation) {
+                contentWrapper.style.transition = `${transitionTime}ms`
+            }else {
+                contentWrapper.style.transition = `none`
+            }
             contentWrapper.style.transform = `translateX(${index * -(contentsWidth + gap)}px)`
         }
-
-        const cloneCWlast = contentWrapper.lastElementChild.cloneNode(true);
-        const cloneCWFirst = contentWrapper.firstElementChild.cloneNode(true);
-
-        contentWrapper.insertBefore(cloneCWlast, contentWrapper.children[0]);
-        contentWrapper.appendChild(cloneCWFirst);
+        
 
         // console.log(cloneCWFirst,cloneCWlast);
     </script>

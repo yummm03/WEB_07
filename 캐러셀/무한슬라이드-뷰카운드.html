@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .slider {
+            width: 500px;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .content-wrapper {
+            display: flex;
+            transition: 0.5s;
+        }
+
+        .content {
+            height: 200px;
+            background-color: pink;
+
+            flex-shrink: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <ul class="content-wrapper">
+            <li class="content">1(처음)</li>
+            <li class="content">2</li>
+            <li class="content">3</li>
+            <li class="content">4</li>
+            <li class="content">5</li>
+            <li class="content">6</li>
+            <li class="content">7</li>
+            <li class="content">8(끝)</li>
+        </ul>
+    </div>
+    <div class="controls">
+        <button class="prev">이전</button>
+        <button class="next">다음</button>
+    </div>
+
+    <script>
+        const viewCount = 1;
+        const gap = 0;
+        const slider = document.querySelector('.slider')
+        const contentWrapper = document.querySelector('.content-wrapper');
+        const slideCount = contentWrapper.childElementCount;
+        const prevButton = document.querySelector('.prev');
+        const nextButton = document.querySelector('.next');
+        const transitionTime = 300;
+
+        const contentWidth = (slider.clientWidth - gap * (viewCount - 1)) / viewCount
+
+
+        // 현재 뷰카운트가 달라지면 오작동하는 이슈가 있습니다.
+        // 이는 뷰카운트 갯수만큼 클론을 만들어야 하는데
+        // 기존의 작성은 viewCount가 1인 경우에만 올바르게 작동 되는 상황입니다.
+        // 반복문을 이용해 viewCount의 갯수 만큼 clone을 만들어주면 해결 될 것 같은데,
+        // 반복문을 한번만 쓰게되면 1 2 3 4 5 -> [1] [5] 1 2 3 4 5 [1] [5] 이런식으로 될것입니다.
+        // 복사하는 부분과 끼워넣는 부분을 별도로 분리해서(for문 2개 이상 쓰라는 이야기)
+        // 복사본을 적절한 위치에 잘 넣어보도록 합시다.
+
+        // 퍼스트, 라스트 말고 개체.children[index]
+
+        let index = viewCount ;
+        let playAble = true;
+
+        applyIndexToSlider(false);
+
+        contentWrapper.style.gap = `${gap}px`
+
+
+
+
+
+
+        for(let i = 0 ; i < contentWrapper.childElementCount ; i ++) {
+            contentWrapper.children[i].style.width = `${contentWidth}px`
+         }
+    
+    
+        for(let i = 0 ; i < viewCount ; i ++) {
+            for(let j = slideCount - 1 ; j >= 0 ; j --) {
+                let cloneSlide = contentWrapper.children[j].cloneNode(true);
+                
+                contentWrapper.insertBefore(cloneSlide, contentWrapper.children[i]);
+            }
+            let cloneSlide = contentWrapper.children[i].cloneNode(true);
+            contentWrapper.appendChild(cloneSlide);
+        }
+
+        
+
+        
+        
+        prevButton.addEventListener('click',()=>{
+            if(playAble){
+                playAble=false;
+            
+                index--;
+                applyIndexToSlider(true)
+            
+                setTimeout(() => {
+                    playAble=true;
+                
+                    if(index === i - 1) {
+                        index = contentWrapper.childElementCount - i - 1
+                        applyIndexToSlider(false) 
+                    }
+                }, transitionTime);   
+            }
+        })
+            
+        
+        nextButton.addEventListener('click',()=>{
+            if(playAble){
+                playAble=false;
+                
+                index++;
+                applyIndexToSlider(true)
+                
+                setTimeout(() => {
+                    playAble=true;
+                    
+                    if(index === contentWrapper.childElementCount - i) {
+                        index = i
+                        applyIndexToSlider(false) 
+                    }
+                }, transitionTime);
+            }
+        })
+
+            
+
+            
+            
+
+        function applyIndexToSlider(animation){
+            if(animation) {
+                contentWrapper.style.transition = `${transitionTime}ms`
+            }else {
+                contentWrapper.style.transition = `none`
+            }
+            
+            contentWrapper.style.transform = `translateX(${index * -(contentWidth + gap)}px)`
+        }
+    </script>
+</body>
+</html>
