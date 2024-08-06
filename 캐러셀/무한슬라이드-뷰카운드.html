@@ -10,6 +10,11 @@
             padding: 0;
         }
 
+        .slider-container {
+            position: relative;
+            width: fit-content;
+        }
+
         .slider {
             width: 500px;
             height: 200px;
@@ -33,28 +38,71 @@
             font-weight: bold;
             font-size: 24px;
         }
+
+        .controls {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+        }
+
+        .controls > .buttons {
+            display: flex;
+            gap: 8px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: calc(100% + 8px);
+
+        }
+
+        .radio-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: gray;
+        }
+
+        .radio-button.active {
+            background-color: pink;
+        }
+
+        .prev {
+            position: absolute;
+            left: 4px;
+            bottom: 4px;
+        }
+
+        .next {
+            position: absolute;
+            right: 4px;
+            bottom: 4px;
+        }
     </style>
 </head>
 <body>
-    <div class="slider">
-        <ul class="content-wrapper">
-            <li class="content">1(처음)</li>
-            <li class="content">2</li>
-            <li class="content">3</li>
-            <li class="content">4</li>
-            <li class="content">5</li>
-            <li class="content">6</li>
-            <li class="content">7</li>
-            <li class="content">8(끝)</li>
-        </ul>
+    <div class="slider-container">
+        <div class="slider">
+            <ul class="content-wrapper">
+                <li class="content">1(처음)</li>
+                <li class="content">2</li>
+                <li class="content">3</li>
+                <li class="content">4</li>
+                <li class="content">5</li>
+                <li class="content">6</li>
+                <li class="content">7</li>
+                <li class="content">8(끝)</li>
+            </ul>
+        </div>
+        <div class="controls">
+            <button class="prev">이전</button>
+            <button class="next">다음</button>
+            <div class="buttons">
+            </div>
+        </div>
     </div>
-    <div class="controls">
-        <button class="prev">이전</button>
-        <button class="next">다음</button>
-    </div>
-
     <script>
-        const viewCount = 1;
+        const viewCount = 4;
         const gap = 0;
         const slider = document.querySelector('.slider')
         const contentWrapper = document.querySelector('.content-wrapper');
@@ -62,6 +110,8 @@
         const prevButton = document.querySelector('.prev');
         const nextButton = document.querySelector('.next');
         const transitionTime = 300;
+
+        const buttons = document.querySelector(`.buttons`)
 
         const contentWidth = (slider.clientWidth - gap * (viewCount - 1)) / viewCount
 
@@ -83,27 +133,26 @@
 
         contentWrapper.style.gap = `${gap}px`
 
-
-
-
-
-
         for(let i = 0 ; i < contentWrapper.childElementCount ; i ++) {
             contentWrapper.children[i].style.width = `${contentWidth}px`
          }
     
-    
+
+        // 반복문에서 복사(cloneNode)하려면 배열을 주면 좋다.
+        const cloneFirst = [];
+        const cloneLast = [];
+
+        // 넣어주기 전 모두 복사 해줘야 나중에 순서가 잘 맞다.
         for(let i = 0 ; i < viewCount ; i ++) {
-            for(let j = slideCount - 1 ; j >= 0 ; j --) {
-                let cloneSlide = contentWrapper.children[j].cloneNode(true);
-                
-                contentWrapper.insertBefore(cloneSlide, contentWrapper.children[i]);
-            }
-            let cloneSlide = contentWrapper.children[i].cloneNode(true);
-            contentWrapper.appendChild(cloneSlide);
+            cloneFirst.push(contentWrapper.children[i].cloneNode(true));
+            cloneLast.push(contentWrapper.children[contentWrapper.childElementCount - i - 1].cloneNode(true));
         }
 
-        
+        for(let i = 0 ; i < viewCount ; i ++) {
+            contentWrapper.appendChild(cloneFirst[i]);
+            contentWrapper.insertBefore(cloneLast[i], contentWrapper.firstElementChild);
+        }
+         
 
         
         
@@ -117,8 +166,8 @@
                 setTimeout(() => {
                     playAble=true;
                 
-                    if(index === i - 1) {
-                        index = contentWrapper.childElementCount - i - 1
+                    if(index === viewCount - 1) {
+                        index = contentWrapper.childElementCount - viewCount - 1
                         applyIndexToSlider(false) 
                     }
                 }, transitionTime);   
@@ -136,15 +185,23 @@
                 setTimeout(() => {
                     playAble=true;
                     
-                    if(index === contentWrapper.childElementCount - i) {
-                        index = i
+                    if(index === contentWrapper.childElementCount - viewCount) {
+                        index = viewCount
                         applyIndexToSlider(false) 
                     }
                 }, transitionTime);
             }
         })
 
-            
+        
+        for(let i = 0 ; i < slideCount ; i ++) {
+            const radioButtons = document.createElement(`div`);
+            radioButtons.classList.add(`radio-button`);
+
+            buttons.appendChild(radioButtons);
+        }
+
+        buttons.children[0].classList.add(`active`);
 
             
             
@@ -157,6 +214,15 @@
             }
             
             contentWrapper.style.transform = `translateX(${index * -(contentWidth + gap)}px)`
+
+            resetButtons();
+            if()
+        }
+
+        function resetButtons() {
+            for(let i = 0 ; i < buttons.childElementCount ; i ++) {
+                buttons.children[i].classList.remove(`active`);
+            }
         }
     </script>
 </body>

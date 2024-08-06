@@ -84,36 +84,45 @@
         }
 
         prevButton.addEventListener('click',()=>{
-            index--;
-            // index -= viewCount;
-            applyIndexToSlider(true)
+            if(playAble){
+                playAble=false;
 
-            setTimeout(() => {
-                playAble = true ;
+                index--;
+                // index -= viewCount;
+                applyIndexToSlider(true)
 
-                if(index === viewCount - 1) {
-                    index = contentWrapper.childElementCount - viewCount - 1
-                    applyIndexToSlider(false)
-                }
-            }, transitionTime);
-        })
+                setTimeout(() => {
+                    playAble = true ;
+
+                    if(index === viewCount - 1) {
+                        index = contentWrapper.childElementCount - viewCount - 1
+                        applyIndexToSlider(false)
+                    }
+                }, transitionTime);
+            }}
+        )
+        
         nextButton.addEventListener('click',()=>{
-            index++
-            // index += viewCount;
-            applyIndexToSlider(true)
+            if(playAble){
+                playAble=false;
 
-            setTimeout(() => {
-                playAble = true ;
+                index++
+                // index += viewCount;
+                applyIndexToSlider(true)
 
-                if(index === contentWrapper.childElementCount - viewCount) {
-                    // 만약 마지막 슬라이드(복사본)에 도달 했다면
-                    // transtion 지속시간만큼 시간이 흐른 뒤에
-                    // transtion을 0으로 만들고, 좌표를 첫번째 슬라이드로 바꿔치기한다
-                    index = viewCount
-                    applyIndexToSlider(false)
-                }
-            }, transitionTime);
-        })
+                setTimeout(() => {
+                    playAble = true ;
+
+                    if(index === contentWrapper.childElementCount - viewCount) {
+                        // 만약 마지막 슬라이드(복사본)에 도달 했다면
+                        // transtion 지속시간만큼 시간이 흐른 뒤에
+                        // transtion을 0으로 만들고, 좌표를 첫번째 슬라이드로 바꿔치기한다
+                        index = viewCount
+                        applyIndexToSlider(false)
+                    }
+                }, transitionTime);
+            }}
+        )
 
         // 무한슬라이드에서 애니메이션 중복작동 처리를 해주지 않으면
         // 슬라이드가 인덱스 밖으로 뛰쳐 나가는 문제가 발생합니다
